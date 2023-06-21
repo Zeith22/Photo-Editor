@@ -26,13 +26,6 @@ info_frame.pack(side="left", anchor="nw", padx=10, pady=10)
 combo_box = ttk.Combobox(window, state="readonly")
 combo_box.pack(side="bottom", pady=10)
 
-images_folder = "images"
-if not os.path.exists(images_folder):
-    os.makedirs(images_folder)
-image_files = [os.path.join(images_folder, file) for file in os.listdir(images_folder) if file.endswith((".jpg", ".jpeg", ".png"))]
-image_list.extend(image_files)
-
-
 
 def show_image(image_path):
     image = Image.open(image_path)
@@ -55,7 +48,7 @@ def update_image_info(image_path):
     file_label.pack(anchor="w")
     size_bytes = os.path.getsize(image_path)
     size_mb = size_bytes / (1024 * 1024)
-    size_label = tk.Label(info_frame, text="Розмір: {:.2f} MB".format(size_mb))
+    size_label = tk.Label(info_frame, text=f"Розмір: {size_mb} MB")
     size_label.pack(anchor="w")
     resolution_label = tk.Label(info_frame, text="Якість: " + str(Image.open(image_path).size))
     resolution_label.pack(anchor="w")
@@ -65,7 +58,6 @@ def select_image():
     if file_path:
         image_name = os.path.basename(file_path)
         image_list.append(image_name)
-        shutil.copy(file_path, os.path.join('images'))
         combo_box['values'] = tuple(image_list)
         show_image(file_path)
 
